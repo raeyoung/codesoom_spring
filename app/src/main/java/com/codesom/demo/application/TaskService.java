@@ -3,10 +3,12 @@ package com.codesom.demo.application;
 import com.codesom.demo.TaskNotFoundException;
 import com.codesom.demo.models.Task;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class TaskService {
     // 1. list -> getTasks
     // 2. detail -> getTask (with ID)
@@ -29,9 +31,13 @@ public class TaskService {
     }
 
     // 등록하기
-    public Task createTask(Task task) {
+    public Task createTask(Task source) {
+        Task task = new Task();
+
         task.setId(generateId());
+        task.setTitle(source.getTitle());
         tasks.add(task);
+
         return task;
     }
 
@@ -43,9 +49,10 @@ public class TaskService {
     }
 
     // 삭제하기
-    public void deleteTask(Long id) {
+    public Task deleteTask(Long id) {
         Task task = getTask(id);
         tasks.remove(task);
+        return task;
     }
 
     // 아이디 생성하기

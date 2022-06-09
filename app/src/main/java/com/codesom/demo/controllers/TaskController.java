@@ -10,6 +10,7 @@ package com.codesom.demo.controllers;
 import com.codesom.demo.TaskNotFoundException;
 import com.codesom.demo.application.TaskService;
 import com.codesom.demo.models.Task;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +26,8 @@ public class TaskController {
 //    private List<Task> tasks = new ArrayList<>();
 //    private Long newId = 0L;
 
-    public TaskController() {
-        taskService = new TaskService();
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
     }
 
     // 목록
@@ -45,6 +46,7 @@ public class TaskController {
 
     // 등록
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Task create(@RequestBody Task task) {
         return taskService.createTask(task);
 //        task.setId(generateId());
@@ -54,14 +56,14 @@ public class TaskController {
     }
 
     @PutMapping("{id}")
-    public Task update(@PathVariable Long id, @RequestBody Task source) {
-        return taskService.updateTask(id, source);
+    public Task update(@PathVariable Long id, @RequestBody Task task) {
+        return taskService.updateTask(id, task);
     }
 
     // 업데이트
     @PatchMapping("{id}")
-    public Task patch(@PathVariable Long id, @RequestBody Task source) {
-        return taskService.updateTask(id, source);
+    public Task patch(@PathVariable Long id, @RequestBody Task Task) {
+        return taskService.updateTask(id, Task);
 //        Task task = findTask(id);
 //        task.setTitle(source.getTitle());
 //
