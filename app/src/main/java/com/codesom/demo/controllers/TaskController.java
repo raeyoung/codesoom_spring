@@ -7,22 +7,18 @@
 
 package com.codesom.demo.controllers;
 
-import com.codesom.demo.TaskNotFoundException;
 import com.codesom.demo.application.TaskService;
-import com.codesom.demo.models.Task;
+import com.codesom.demo.domain.Task;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/tasks")
 @CrossOrigin
 public class TaskController {
-    private TaskService taskService;
+    private final TaskService taskService;
 //    private List<Task> tasks = new ArrayList<>();
 //    private Long newId = 0L;
 

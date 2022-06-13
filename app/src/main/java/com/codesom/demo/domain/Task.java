@@ -1,6 +1,17 @@
-package com.codesom.demo.models;
+package com.codesom.demo.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+// 1. Entity (Domain)
+// 2. RDB의 entity 와 다름 주의
+// JPA의 Entity 역할도 같이 하기로 함
+@Entity
 public class Task {
+    // Identifier - Unique Key
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String title;

@@ -9,12 +9,11 @@ package com.codesom.demo.controllers;
 
 import com.codesom.demo.TaskNotFoundException;
 import com.codesom.demo.application.TaskService;
-import com.codesom.demo.models.Task;
+import com.codesom.demo.domain.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
