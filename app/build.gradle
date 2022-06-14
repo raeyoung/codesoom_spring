@@ -41,8 +41,18 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.13.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
 
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    // DozerMapper
+    implementation 'com.github.dozermapper:dozer-core:6.4.0'
+
     // Spring Web
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Spring Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // Spring Data JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

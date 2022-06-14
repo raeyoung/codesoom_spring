@@ -9,7 +9,9 @@ package com.codesom.demo.application;
 import com.codesom.demo.ProductNotFoundException;
 import com.codesom.demo.domain.Product;
 import com.codesom.demo.domain.ProductRepository;
-import org.checkerframework.checker.nullness.Opt;
+import com.codesom.demo.dto.ProductData;
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +20,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -26,23 +27,29 @@ import static org.mockito.Mockito.verify;
 
 class ProductServiceTest {
     private ProductService productService;
-    private ProductRepository productRepository = mock(ProductRepository.class);;
+    private final ProductRepository productRepository = mock(ProductRepository.class);;
 
     @BeforeEach
     void setUp() {
-        Product product = new Product(1L, "쥐돌이", "냥이월드", 5000);
-        productService = new ProductService(productRepository);
+        Product product =  Product.builder()
+                .id(1L)
+                .name("쥐돌이")
+                .maker("냥이월드")
+                .price(5000)
+                .build();
+        Mapper mapper = DozerBeanMapperBuilder.buildDefault();
+        productService = new ProductService(mapper, productRepository);
 
         given(productRepository.findAll()).willReturn(List.of(product));
         given(productRepository.findById(1L)).willReturn(Optional.of(product));
         given(productRepository.save(any(Product.class))).will(invocation -> {
             Product source = invocation.getArgument(0);
-            return new Product(
-                    2L,
-                    source.getName(),
-                    source.getMaker(),
-                    source.getPrice()
-            );
+            return Product.builder()
+                    .id(2L)
+                    .name(source.getName())
+                    .maker(source.getMaker())
+                    .price(source.getPrice())
+                    .build();
         });
 
     }
@@ -81,7 +88,13 @@ class ProductServiceTest {
 
     @Test
     void createProduct() {
-        Product product = productService.createProduct(new Product("멍냥이", "냥이월드", 5000));
+        ProductData productData = ProductData.builder()
+                .name("멍냥이")
+                .maker("냥이월드")
+                .price(5000)
+                .build();
+
+        Product product = productService.createProduct(productData);
 
         verify(productRepository).save(any(Product.class));
 
@@ -91,8 +104,12 @@ class ProductServiceTest {
 
     @Test
     void updateProductWithExistedProduct() {
-        Product source = new Product("멍냥이", "냥이월드", 5000);
-        Product product = productService.updateProduct(1L, source);
+        ProductData productData = ProductData.builder()
+                .name("멍냥이")
+                .maker("냥이월드")
+                .price(5000)
+                .build();
+        Product product = productService.updateProduct(1L, productData);
 
         assertThat(product.getId()).isEqualTo(1L);
         assertThat(product.getName()).isEqualTo("멍냥이");
@@ -101,9 +118,13 @@ class ProductServiceTest {
 
     @Test
     void updateProductWithNotExistedProduct() {
-        Product source = new Product("멍냥이", "냥이월드", 5000);
+        ProductData productData = ProductData.builder()
+                .name("멍냥이")
+                .maker("냥이월드")
+                .price(5000)
+                .build();
 
-        assertThatThrownBy(() -> productService.updateProduct(1000L, source))
+        assertThatThrownBy(() -> productService.updateProduct(1000L, productData))
                 .isInstanceOf(ProductNotFoundException.class);
     }
 

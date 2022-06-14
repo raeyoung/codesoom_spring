@@ -10,6 +10,7 @@ package com.codesom.demo.controllers;
 import com.codesom.demo.ProductNotFoundException;
 import com.codesom.demo.application.ProductService;
 import com.codesom.demo.domain.Product;
+import com.codesom.demo.dto.ProductData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,24 +44,30 @@ class ProductControllerTest {
 
     @BeforeEach
     void setUp() {
-        Product product = new Product(1L, "쥐돌이", "냥이월드", 5000);
+        Product product =  Product.builder()
+                .id(1L)
+                .name("쥐돌이")
+                .maker("냥이월드")
+                .price(5000)
+                .build();
 
         given(productService.getProducts()).willReturn(List.of(product));
         given(productService.getProduct(1L)).willReturn(product);
         given(productService.getProduct(1000L)).willThrow(new ProductNotFoundException(1000L));
-        given(productService.createProduct(any(Product.class))).willReturn(product);
-        given(productService.updateProduct(eq(1L), any(Product.class)))
+        given(productService.createProduct(any(ProductData.class))).willReturn(product);
+        given(productService.updateProduct(eq(1L), any(ProductData.class)))
                 .will(invocation -> {
-                    Product source = invocation.getArgument(1);
+                    ProductData productData = invocation.getArgument(1);
                     Long id = invocation.getArgument(0);
-                    return new Product(
-                            id,
-                            source.getName(),
-                            source.getMaker(),
-                            source.getPrice()
-                    );
+                    return Product.builder()
+                            .id(2L)
+                            .name(productData.getName())
+                            .maker(productData.getMaker())
+                            .price(productData.getPrice())
+                            .build();
+
                 });
-        given(productService.updateProduct(eq(1000L), any(Product.class)))
+        given(productService.updateProduct(eq(1000L), any(ProductData.class)))
                 .willThrow(new ProductNotFoundException(1000L));
         given(productService.deleteProduct(1000L)).willThrow(new ProductNotFoundException(1000L));
     }
@@ -94,7 +101,28 @@ class ProductControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().string(containsString("쥐돌이")));
 
-        verify(productService).createProduct(any(Product.class));
+        verify(productService).createProduct(any(ProductData.class));
+    }
+
+    @Test
+    void createWithValidAttributes() throws Exception {
+        mockMvc.perform(post("/products").accept(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"쥐돌이\",\"maker\":\"냥이월드\",\"price\":5000}"))
+                .andExpect(status().isCreated())
+                .andExpect(content().string(containsString("쥐돌이")));
+
+        verify(productService).createProduct(any(ProductData.class));
+    }
+
+    @Test
+    void createWithInValidAttributes() throws Exception {
+        mockMvc.perform(post("/products").accept(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"\",\"maker\":\"\",\"price\":0}"))
+                .andExpect(status().isBadRequest());
+
+
     }
 
     @Test
@@ -105,7 +133,7 @@ class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("멍냥이")));
 
-        verify(productService).updateProduct(eq(1L), any(Product.class));
+        verify(productService).updateProduct(eq(1L), any(ProductData.class));
     }
 
     @Test
@@ -114,6 +142,14 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"멍냥이\",\"maker\":\"냥이월드\",\"price\":5000}"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void updateWithInvalidAttributes() throws Exception {
+        mockMvc.perform(patch("/products/1").accept(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"\",\"maker\":\"\",\"price\":0}"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

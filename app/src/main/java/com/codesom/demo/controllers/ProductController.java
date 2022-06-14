@@ -9,9 +9,11 @@ package com.codesom.demo.controllers;
 
 import com.codesom.demo.application.ProductService;
 import com.codesom.demo.domain.Product;
+import com.codesom.demo.dto.ProductData;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -41,13 +43,13 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product create(@RequestBody Product product) {
-        return productService.createProduct(product);
+    public Product create(@RequestBody @Valid ProductData productData) {
+        return productService.createProduct(productData);
     }
 
     @PatchMapping("{id}")
-    public Product update(@PathVariable Long id, @RequestBody Product product) {
-        return productService.updateProduct(id, product);
+    public Product update(@PathVariable Long id, @RequestBody @Valid ProductData productData) {
+        return productService.updateProduct(id, productData);
     }
 
     @DeleteMapping("{id}")

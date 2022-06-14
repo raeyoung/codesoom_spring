@@ -16,11 +16,22 @@
 
 package com.codesom.demo.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue
@@ -34,46 +45,10 @@ public class Product {
 
     private String imageUrl;
 
-    public Product() {
 
-    }
-
-    public Product(String name, String maker, int price) {
+    public void change(String name, String maker, int price) {
         this.name = name;
         this.maker = maker;
         this.price = price;
-    }
-
-    public Product(long id, String name, String maker, int price) {
-        this.id = id;
-        this.name = name;
-        this.maker = maker;
-        this.price = price;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getMaker() {
-        return maker;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void change(Product source) {
-        this.name = source.getName();
-        this.maker = source.getMaker();
-        this.price = source.getPrice();
     }
 }
