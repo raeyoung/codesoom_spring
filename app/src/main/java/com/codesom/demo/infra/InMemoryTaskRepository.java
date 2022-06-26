@@ -1,6 +1,5 @@
 package com.codesom.demo.infra;
 
-import com.codesom.demo.TaskNotFoundException;
 import com.codesom.demo.domain.Task;
 import com.codesom.demo.domain.TaskRepository;
 import org.springframework.stereotype.Repository;

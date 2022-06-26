@@ -13,6 +13,7 @@ plugins {
     // Spring
     id 'org.springframework.boot' version '2.7.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+
 }
 
 configurations {
@@ -48,6 +49,11 @@ dependencies {
     // DozerMapper
     implementation 'com.github.dozermapper:dozer-core:6.4.0'
 
+    //java-jjwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
     // Spring Web
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -58,6 +64,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'com.h2database:h2'
 
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+
     // Spring Developer Tools (build 후 바로 반영되도록)
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
@@ -65,6 +75,12 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+
+    // Swagger
+    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
 }
 
 application {

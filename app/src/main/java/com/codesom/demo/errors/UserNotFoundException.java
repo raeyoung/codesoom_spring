@@ -1,4 +1,4 @@
-package com.codesom.demo;
+package com.codesom.demo.errors;
 
 public class UserNotFoundException extends RuntimeException{
     public UserNotFoundException(Long id) {

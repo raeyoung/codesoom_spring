@@ -1,6 +1,7 @@
 package com.codesom.demo.controllers;
 
-import com.codesom.demo.UserNotFoundException;
+import com.codesom.demo.application.AuthenticationService;
+import com.codesom.demo.errors.UserNotFoundException;
 import com.codesom.demo.application.UserService;
 import com.codesom.demo.domain.User;
 import com.codesom.demo.dto.UserModificationData;
@@ -28,7 +29,10 @@ class UsersControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    UserService userService;
+    private UserService userService;
+
+    @MockBean
+    private AuthenticationService authenticationService;
 
     @BeforeEach
     void setUp() {

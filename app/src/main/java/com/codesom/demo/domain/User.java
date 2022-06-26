@@ -40,4 +40,8 @@ public class User {
     public void destroy() {
         deleted = true;
     }
+
+    public boolean authenticate(String password) {
+        return !deleted && password.equals(this.password);
+    }
 }

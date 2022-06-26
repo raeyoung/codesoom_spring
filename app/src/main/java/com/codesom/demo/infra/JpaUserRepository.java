@@ -15,4 +15,6 @@ public interface JpaUserRepository extends UserRepository, CrudRepository<User, 
     Optional<User> findById(Long id);
 
     Optional<User> findByIdAndDeletedIsFalse(Long id);
+
+    Optional<User> findByEmail(String email);
 }

@@ -6,7 +6,7 @@
 
 package com.codesom.demo.application;
 
-import com.codesom.demo.ProductNotFoundException;
+import com.codesom.demo.errors.ProductNotFoundException;
 import com.codesom.demo.domain.Product;
 import com.codesom.demo.domain.ProductRepository;
 import com.codesom.demo.dto.ProductData;

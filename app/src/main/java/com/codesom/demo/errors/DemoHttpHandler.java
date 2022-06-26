@@ -1,4 +1,4 @@
-package com.codesom.demo;
+package com.codesom.demo.errors;
 
 import com.codesom.demo.domain.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;

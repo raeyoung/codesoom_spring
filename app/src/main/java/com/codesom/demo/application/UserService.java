@@ -1,7 +1,7 @@
 package com.codesom.demo.application;
 
-import com.codesom.demo.UserEmailDuplicationException;
-import com.codesom.demo.UserNotFoundException;
+import com.codesom.demo.errors.UserEmailDuplicationException;
+import com.codesom.demo.errors.UserNotFoundException;
 import com.codesom.demo.domain.User;
 import com.codesom.demo.domain.UserRepository;
 import com.codesom.demo.dto.UserModificationData;

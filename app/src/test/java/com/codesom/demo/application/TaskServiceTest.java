@@ -1,9 +1,8 @@
 package com.codesom.demo.application;
 
-import com.codesom.demo.TaskNotFoundException;
+import com.codesom.demo.errors.TaskNotFoundException;
 import com.codesom.demo.domain.Task;
 import com.codesom.demo.domain.TaskRepository;
-import com.codesom.demo.infra.InMemoryTaskRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
